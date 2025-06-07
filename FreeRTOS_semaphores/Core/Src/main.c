@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
+#include "string.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -314,7 +315,19 @@ void HighPriority(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+	char *str1 = "Entered high priority task\r\n";
+	HAL_UART_Transmit(&huart2, (uint8_t *)str1, strlen(str1),1000);
+
+    osSemaphoreWait(Semaphore1Handle,osWaitForever);
+
+    char *str3 = "Semaphore acquired by a high priority task\r\n";
+    HAL_UART_Transmit(&huart2, (uint8_t *)str3, strlen(str3),1000);
+
+	char *str2 = "leaving high priority task\r\n";
+	HAL_UART_Transmit(&huart2, (uint8_t *)str2, strlen(str2),1000);
+
+	osSemaphoreRelease(Semaphore1Handle);
+    osDelay(500);
   }
   /* USER CODE END HighPriority */
 }
@@ -332,9 +345,22 @@ void NormalPriority(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
-  }
+	  char *str1 = "Entered normal priority task\r\n";
+	  HAL_UART_Transmit(&huart2, (uint8_t *)str1, strlen(str1),1000);
+
+	  osSemaphoreWait(Semaphore1Handle,osWaitForever);
+
+	  char *str3 = "Semaphore acquired by a normal priority task\r\n";
+	  HAL_UART_Transmit(&huart2, (uint8_t *)str3, strlen(str3),1000);
+
+	  char *str2 = "leaving normal priority task\r\n";
+	  HAL_UART_Transmit(&huart2, (uint8_t *)str2, strlen(str2),1000);
+
+	  osSemaphoreRelease(Semaphore1Handle);
+	  osDelay(500);
+
   /* USER CODE END NormalPriority */
+}
 }
 
 /* USER CODE BEGIN Header_BelowPriority */
@@ -350,7 +376,14 @@ void BelowPriority(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+
+		char *str1 = "Entered low priority task\r\n";
+		HAL_UART_Transmit(&huart2, (uint8_t *)str1, strlen(str1),1000);
+
+		char *str2 = "leaving low priority task\r\n";
+		HAL_UART_Transmit(&huart2, (uint8_t *)str2, strlen(str2),1000);
+
+	    osDelay(500);
   }
   /* USER CODE END BelowPriority */
 }
