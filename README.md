@@ -1,5 +1,6 @@
 # FREERTOS_STM
 Implementation of FREERTOS with stm32
+brainstorming questions while implementing code 
 
 Semaphores
 - are binary semaphores sufficient for task executions?  no danger of priority inversions 
